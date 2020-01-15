@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 const ListItem = (props) => {
   const [modalVisible, setVisibility] = useState(false);
 
-  function toggleVisibility() {
+  const toggleVisibility = () => {
     modalVisible ? setVisibility(false) : setVisibility(true);
-  }
+  };
 
   return (
     <View>
