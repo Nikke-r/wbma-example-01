@@ -1,31 +1,24 @@
 /* eslint-disable max-len */
-import React, {useState} from 'react';
-import {Modal, TouchableOpacity, Image, View, Text, StyleSheet, Button} from 'react-native';
+import React from 'react';
+import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+import AsyncImage from './AsyncImage';
 
 const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
 const ListItem = (props) => {
-  const [modalVisible, setVisibility] = useState(false);
-
-  const toggleVisibility = () => {
-    modalVisible ? setVisibility(false) : setVisibility(true);
-  };
-
   return (
     <View>
-      <Modal
-        animationType='slide'
-        transparent={false}
-        visible={modalVisible}
-      >
-        <View style={style.modalStyle}>
-          <Image style={{width: 350, height: 450}} source={{uri: mediaUrl + props.singleMedia.filename}}/>
-          <Button onPress={toggleVisibility} title='Close'/>
-        </View>
-      </Modal>
-      <TouchableOpacity style={style.li} onPress={toggleVisibility}>
-        <Image
+      <TouchableOpacity
+        style={style.li}
+        onPress={
+          () => {
+            props.navigation.push('Single', {
+              img: props.singleMedia,
+            });
+          }
+        }>
+        <AsyncImage
           style={style.liImg}
           source={{uri: mediaUrl + props.singleMedia.thumbnails.w160}}
         />
@@ -40,35 +33,41 @@ const ListItem = (props) => {
 
 ListItem.propTypes = {
   singleMedia: PropTypes.object,
+  navigation: PropTypes.object,
 };
 
 const style = StyleSheet.create({
   li: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'silver',
-    padding: 10,
-    marginBottom: 5,
-    borderRadius: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    margin: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.5,
+    borderWidth: 0.5,
+    borderColor: 'black',
   },
   liImg: {
-    flex: 1,
-    margin: 3,
-    borderRadius: 15,
+    borderRadius: 100,
+    height: 100,
+    width: 100,
+    margin: 10,
   },
   liText: {
     flex: 1,
-    margin: 3,
+    marginBottom: 10,
   },
   liTitle: {
     fontWeight: 'bold',
-    fontSize: 20,
-  },
-  modalStyle: {
-    top: 20,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontSize: 15,
+    top: 10,
+    marginBottom: 10,
   },
 });
 
