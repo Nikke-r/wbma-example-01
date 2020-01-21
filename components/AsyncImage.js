@@ -1,31 +1,37 @@
 /* eslint-disable max-len */
 import React, {useState} from 'react';
-import {View, Image, ActivityIndicator} from 'react-native';
+import {View, Image, ActivityIndicator, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 
 const AsyncImage = (props) => {
   const [loaded, setLoaded] = useState(false);
   const source = props.source;
 
-  function isLoaded() {
-    setLoaded(true);
+  function isLoading() {
+    setTimeout(() => {
+      setLoaded(true);
+    }, 1000);
   }
 
   return (
-    <View>
-      <Image style={props.style} source={source} onLoad={isLoaded}/>
+    <View style={styles.container}>
+      <Image style={props.style} source={source} onLoad={isLoading}/>
       {!loaded &&
-      <View>
-        <ActivityIndicator size='small' color='#a9c1d6' />
-      </View>
+        <ActivityIndicator />
       }
     </View>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
 AsyncImage.propTypes = {
   style: PropTypes.object,
-  source: PropTypes.string,
+  source: PropTypes.object,
 };
 
 export default AsyncImage;

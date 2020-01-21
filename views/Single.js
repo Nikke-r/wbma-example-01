@@ -11,8 +11,8 @@ const Single = (props) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.text}>{title}</Text>
       <AsyncImage style={styles.image} source={{uri: mediaUrl + filename}} />
-      <Text>{title}</Text>
     </View>
   );
 };
@@ -23,11 +23,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 40,
+    paddingTop: 20,
   },
   image: {
     width: 350,
     height: 450,
+  },
+  text: {
+    paddingBottom: 40,
+    fontWeight: 'bold',
+    fontSize: 30,
   },
 });
 
