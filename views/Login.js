@@ -23,7 +23,7 @@ const Login = (props) => { // props is needed for navigation
 
   const registerAsync = async () => {
     try {
-      await register(inputs.username, inputs.register, inputs.password);
+      await register(inputs.username, inputs.email, inputs.password);
       const loginUser = await login(inputs.username, inputs.password);
       await AsyncStorage.setItem('userToken', loginUser.token);
       props.navigation.navigate('App');

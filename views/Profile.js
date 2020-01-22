@@ -23,9 +23,11 @@ const Profile = (props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.profileTitle}>Profile</Text>
-      <Text>{username}</Text>
-      <Text>{email}</Text>
-      <Button title='Logout' onPress={signOutAsync} />
+      <Text style={styles.username}>{username}</Text>
+      <Text style={styles.email}>{email}</Text>
+      <View>
+        <Button title='Logout' onPress={signOutAsync} />
+      </View>
     </View>
   );
 };
@@ -40,6 +42,14 @@ const styles = StyleSheet.create({
   profileTitle: {
     fontWeight: 'bold',
     fontSize: 30,
+  },
+  username: {
+    fontSize: 20,
+    paddingTop: 20,
+  },
+  email: {
+    paddingTop: 20,
+    fontSize: 20,
   },
 });
 
