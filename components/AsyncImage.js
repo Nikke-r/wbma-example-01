@@ -7,17 +7,15 @@ const AsyncImage = (props) => {
   const [loaded, setLoaded] = useState(false);
   const source = props.source;
 
-  function isLoading() {
-    setTimeout(() => {
-      setLoaded(true);
-    }, 1000);
-  }
+  const isLoaded = () => {
+    setLoaded(true);
+  };
 
   return (
     <View style={styles.container}>
-      <Image style={props.style} source={source} onLoad={isLoading}/>
+      <Image style={props.style} source={source} onLoad={isLoaded}/>
       {!loaded &&
-        <ActivityIndicator />
+        <ActivityIndicator style={{position: 'absolute'}} />
       }
     </View>
   );
@@ -26,6 +24,8 @@ const AsyncImage = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
