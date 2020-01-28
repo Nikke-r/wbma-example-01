@@ -1,39 +1,37 @@
+/* eslint-disable max-len */
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
 import AsyncImage from '../components/AsyncImage';
 const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
 import PropTypes from 'prop-types';
+import {Container, Content, Card, CardItem, Text, Icon, Body} from 'native-base';
 
 const Single = (props) => {
   const {navigation} = props;
   const filename = navigation.getParam('img', 'No picture found!').filename;
   const title = navigation.getParam('img', 'No title found!').title;
+  const desc = navigation.getParam('img', 'No Description found!').description;
+  const userId = navigation.getParam('img', 'Unknown').user_id;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{title}</Text>
-      <AsyncImage style={styles.image} source={{uri: mediaUrl + filename}} />
-    </View>
+    <Container>
+      <Content>
+        <Card>
+          <CardItem cardBody>
+            <AsyncImage source={{uri: mediaUrl + filename}} style={{width: 350, height: 350, margin: 10}} />
+          </CardItem>
+          <CardItem>
+            <Icon name='image'/>
+            <Body>
+              <Text>{title}</Text>
+              <Text>{desc}</Text>
+              <Text>By {userId}</Text>
+            </Body>
+          </CardItem>
+        </Card>
+      </Content>
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20,
-  },
-  image: {
-    width: 350,
-    height: 450,
-  },
-  text: {
-    fontWeight: 'bold',
-    fontSize: 30,
-  },
-});
 
 Single.propTypes = {
   navigation: PropTypes.object,

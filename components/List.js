@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, {useContext} from 'react';
-import {FlatList} from 'react-native';
+import {List as BaseList} from 'native-base';
 import ListItem from './ListItem';
 import {MediaContext} from '../contexts/MediaContext';
 import {getAllMedia} from '../hooks/APIHooks';
@@ -12,11 +12,10 @@ const List = (props) => {
   console.log(loading);
   setMedia(data);
   return (
-    <FlatList
-      data={media}
+    <BaseList
+      dataArray={media}
       keyExtractor={(item, index) => index.toString()}
-      contentContainerStyle={{paddingBottom: 10}}
-      renderItem={({item}) => <ListItem singleMedia={item} navigation={props.navigation} />}
+      renderRow={(item) => <ListItem singleMedia={item} navigation={props.navigation} />}
     />
   );
 };

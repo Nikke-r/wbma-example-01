@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, {useState} from 'react';
-import {View, Image, ActivityIndicator, StyleSheet} from 'react-native';
+import {View, Image, ActivityIndicator} from 'react-native';
 import PropTypes from 'prop-types';
 
 const AsyncImage = (props) => {
@@ -12,8 +12,8 @@ const AsyncImage = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image style={props.style} source={source} onLoad={isLoaded}/>
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <Image style={props.style} source={source} onLoad={isLoaded} alt={props.alt}/>
       {!loaded &&
         <ActivityIndicator style={{position: 'absolute'}} />
       }
@@ -21,17 +21,10 @@ const AsyncImage = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
 AsyncImage.propTypes = {
   style: PropTypes.object,
   source: PropTypes.object,
+  alt: PropTypes.string,
 };
 
 export default AsyncImage;

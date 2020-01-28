@@ -1,81 +1,92 @@
 /* eslint-disable max-len */
-import React from 'react';
-import {StyleSheet, View, Text, Button, AsyncStorage} from 'react-native';
+import React, {useState} from 'react';
+import {AsyncStorage} from 'react-native';
 import PropTypes from 'prop-types';
 import FormTextInput from '../components/FormTextInput';
+import {Container, Content, Form, Item, Button, Text, Header, Title, Body} from 'native-base';
 import useSignUpForm from '../hooks/LoginHooks';
-import {login, register} from '../hooks/APIHooks';
+import {fetchPOST} from '../hooks/APIHooks';
 
 const Login = (props) => { // props is needed for navigation
-  const {handleUsernameChange, handleEmailChange, handlePasswordChange, inputs} = useSignUpForm();
+  const [error, setError] = useState('');
+  const {
+    handleUsernameChange,
+    handlePasswordChange,
+    handleEmailChange,
+    inputs,
+  } = useSignUpForm();
 
   const signInAsync = async () => {
     try {
-      const user = await login(inputs.username, inputs.password);
+      const user = await fetchPOST('login', inputs);
+      console.log('Login', user);
       await AsyncStorage.setItem('userToken', user.token);
-      await AsyncStorage.setItem('username', user.user.username);
-      await AsyncStorage.setItem('email', user.user.email);
+      await AsyncStorage.setItem('user', JSON.stringify(user.user));
       props.navigation.navigate('App');
-    } catch (error) {
-      console.log('Login error: ' + error.message);
+    } catch (e) {
+      console.log('signInAsync error: ' + e.message);
+      setError(e.message);
     }
   };
 
   const registerAsync = async () => {
     try {
-      await register(inputs.username, inputs.email, inputs.password);
-      const loginUser = await login(inputs.username, inputs.password);
-      await AsyncStorage.setItem('userToken', loginUser.token);
-      props.navigation.navigate('App');
-    } catch (error) {
-      console.log('Register error: ' + error.message);
+      const result = await fetchPOST('users', inputs);
+      console.log('register', result);
+      signInAsync();
+    } catch (e) {
+      console.log('registerAsync error: ', e.message);
+      setError(e.message);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.formTitle}>Login</Text>
-        <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} />
-        <FormTextInput autoCapitalize='none' placeholder='Password' value={inputs.password} onChangeText={handlePasswordChange} secureTextEntry={true} />
-        <Button title="Sign in!" onPress={
-          () => {
-            signInAsync();
-          }
-        } />
-      </View>
-      <View style={styles.formContainer}>
-        <Text style={styles.formTitle}>Register</Text>
-        <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} />
-        <FormTextInput autoCapitalize='none' placeholder='Email' value={inputs.email} onChangeText={handleEmailChange} />
-        <FormTextInput autoCapitalize='none' placeholder='Password' value={inputs.password} onChangeText={handlePasswordChange} secureTextEntry={true} />
-        <Button title='Register' onPress={
-          () => {
-            registerAsync();
-          }} />
-      </View>
-    </View>
+    <Container>
+      <Header>
+        <Body>
+          <Title>
+            MyApp
+          </Title>
+        </Body>
+      </Header>
+      <Content>
+        <Form>
+          <Title>
+            Login
+          </Title>
+          <Item>
+            <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} />
+          </Item>
+          <Item last>
+            <FormTextInput autoCapitalize='none' placeholder='Password' value={inputs.password} onChangeText={handlePasswordChange} secureTextEntry={true} />
+          </Item>
+          <Button full onPress={signInAsync}>
+            <Text>
+              Sign in!
+            </Text>
+          </Button>
+        </Form>
+        <Form>
+          <Title>Register</Title>
+          <Item>
+            <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} />
+          </Item>
+          <Item>
+            <FormTextInput autoCapitalize='none' placeholder='Email' value={inputs.email} onChangeText={handleEmailChange} />
+          </Item>
+          <Item last>
+            <FormTextInput autoCapitalize='none' placeholder='Password' value={inputs.password} onChangeText={handlePasswordChange} secureTextEntry={true} />
+          </Item>
+          <Button full onPress={registerAsync}>
+            <Text>
+              Register!
+            </Text>
+          </Button>
+        </Form>
+      </Content>
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
-  },
-  formContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  formTitle: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
 
 Login.propTypes = {
   navigation: PropTypes.object,
