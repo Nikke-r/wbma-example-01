@@ -10,12 +10,13 @@ const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
 const Profile = (props) => {
   const [user, setUser] = useState({});
   const [avatar, setAvatar] = useState();
+  
   const userToState = async () => {
     const userFromStorage = await AsyncStorage.getItem('user');
     setUser(JSON.parse(userFromStorage));
     const token = await AsyncStorage.getItem('userToken');
     const avatarByTag = await fetchGET('tags', 'avatar_' + user.user_id, token);
-    setAvatar(avatarByTag);
+    setAvatar(avatarByTag[0]);
   };
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const Profile = (props) => {
             </Left>
           </CardItem>
           <CardItem cardBody>
-            <AsyncImage style={{width: 350, height: 350, margin: 10}} source={{uri: mediaUrl + avatar[0].filename}} alt='No avatar found' />
+            <AsyncImage style={{width: 350, height: 350, margin: 10}} source={{uri: mediaUrl + avatar.filename}} alt='No avatar found' />
           </CardItem>
           <CardItem>
             <Left>
