@@ -1,14 +1,15 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, {useState} from 'react';
 import {Container, Header, Body, Text, Content, Form, Item, Button, Label, Icon, View, Title} from 'native-base';
 import FormTextInput from '../components/FormTextInput';
 import PropTypes from 'prop-types';
 import useSignUpForm from '../hooks/LoginHooks';
-import {fetchPUT} from '../hooks/APIHooks';
+import {fetchPUT, fetchGET} from '../hooks/APIHooks';
 import {AsyncStorage} from 'react-native';
 import ShowIcon from '../components/ShowIcon';
 
 const EditProfile = (props) =>{
+  const [userExists, setUserExists] = useState(false);
   const {
     handleUsernameChange,
     handlePasswordChange,
@@ -32,6 +33,16 @@ const EditProfile = (props) =>{
     props.navigation.navigate('Profile');
   };
 
+  const checkUser = async (event) => {
+    const user = event.nativeEvent.text;
+    const response = await fetchGET('users/username', user);
+    if (response.available === false) {
+      setUserExists(true);
+    } else if (response.available === true) {
+      setUserExists(false);
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -42,25 +53,29 @@ const EditProfile = (props) =>{
       <Content style={{marginTop: 20}}>
         <Title>All fields are optional</Title>
         <Form>
-          <Item first stackedLabel>
-            <Label>Edit username</Label>
-            <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} />
-            <ShowIcon />
+          <Item first iconLeft>
+            <Icon name='person' />
+            <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} onEndEditing={checkUser}/>
+            {!userExists ? <ShowIcon value={inputs.username} error={inputs.usernameError} field='username'/> : <Text note>Username already taken</Text>}
           </Item>
-          <Item stackedLabel>
-            <Label>Edit fullname</Label>
+          <Item iconLeft>
+            <Icon name='person' />
             <FormTextInput autoCapitalize='words' placeholder='Fullname' value={inputs.fullname} onChangeText={handleFullnameChange} />
           </Item>
-          <Item stackedLabel>
-            <Label>Edit email</Label>
+          <Item iconLeft>
+            <Icon name='mail' />
             <FormTextInput autoCapitalize='none' placeholder='Email' value={inputs.email} onChangeText={handleEmailChange} />
+            <ShowIcon value={inputs.email} error={inputs.emailError} field='email' />
           </Item>
-          <Item stackedLabel>
-            <Label>Edit Password</Label>
+          <Item iconLeft>
+            <Icon name='lock' />
             <FormTextInput autoCapitalize='none' placeholder='Password' value={inputs.password} onChangeText={handlePasswordChange} secureTextEntry={true} />
+            <ShowIcon value={inputs.password} error={inputs.passwordError} field='password' />
           </Item>
-          <Item last>
+          <Item last iconLeft>
+            <Icon name='lock' />
             <FormTextInput autoCapitalize='none' placeholder='Retype password' value={inputs.retypePassword} onChangeText={handleRetypePasswordChange} secureTextEntry={true} />
+            <ShowIcon value={inputs.retypePassword} error={inputs.retypePasswordError} field='retypePassword' />
           </Item>
         </Form>
         <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 30}}>

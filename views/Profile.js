@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {AsyncStorage} from 'react-native';
 import PropTypes from 'prop-types';
-import {Container, Content, Card, CardItem, Icon, Left, Body, Text, Button, Right} from 'native-base';
+import {Container, Content, Card, CardItem, Icon, Left, Body, Text, Button, Right, ListItem} from 'native-base';
 import AsyncImage from '../components/AsyncImage';
 import {fetchGET} from '../hooks/APIHooks';
 const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
@@ -60,14 +60,14 @@ const Profile = (props) => {
           <CardItem cardBody>
             <AsyncImage style={{width: 350, height: 350, margin: 10}} source={{uri: mediaURL + user.avatar}} alt='No avatar found' />
           </CardItem>
-          <CardItem>
-            <Left>
-              <Body>
-                <Text>Fullname: {user.userInfo.full_name}</Text>
-                <Text>Email: {user.userInfo.email}</Text>
-              </Body>
-            </Left>
-          </CardItem>
+          <ListItem iconLeft>
+            <Icon name='person' />
+            <Text> {user.userInfo.full_name} </Text>
+          </ListItem>
+          <ListItem iconLeft>
+            <Icon name='mail' />
+            <Text> {user.userInfo.email} </Text>
+          </ListItem>
           <CardItem footer bordered>
             <Body>
               <Button full danger onPress={signOutAsync}>

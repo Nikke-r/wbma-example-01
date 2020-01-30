@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Content} from 'native-base';
+import {Container} from 'native-base';
 import List from '../components/List';
 import PropTypes from 'prop-types';
 
@@ -8,9 +8,7 @@ const Home = (props) => {
 
   return (
     <Container>
-      <Content>
-        <List navigation={navigation}/>
-      </Content>
+      <List navigation={navigation}/>
     </Container>
   );
 };
