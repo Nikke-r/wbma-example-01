@@ -63,4 +63,18 @@ const fetchPOST = async (endpoint = '', data = {}, token = '') => {
   return json;
 };
 
-export {getAllMedia, fetchGET, fetchPOST};
+const fetchPUT = async (endpoint = '', data = {}, token = '') => {
+  const fetchOptions = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token,
+    },
+    body: JSON.stringify(data),
+  };
+  const response = await fetch(apiUrl + endpoint, fetchOptions);
+  const json = await response.json();
+  return json;
+};
+
+export {getAllMedia, fetchGET, fetchPOST, fetchPUT};

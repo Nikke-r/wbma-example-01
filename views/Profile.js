@@ -2,20 +2,29 @@
 import React, {useEffect, useState} from 'react';
 import {AsyncStorage} from 'react-native';
 import PropTypes from 'prop-types';
-import {Container, Content, Card, CardItem, Icon, Left, Body, Text, Button} from 'native-base';
+import {Container, Content, Card, CardItem, Icon, Left, Body, Text, Button, Right} from 'native-base';
 import AsyncImage from '../components/AsyncImage';
 import {fetchGET} from '../hooks/APIHooks';
-const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
+const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
 const Profile = (props) => {
-  const [user, setUser] = useState({});
-  const [avatar, setAvatar] = useState();
+  const [user, setUser] = useState({
+    userInfo: {},
+    avatar: '',
+  });
+
   const userToState = async () => {
-    const userFromStorage = await AsyncStorage.getItem('user');
-    setUser(JSON.parse(userFromStorage));
-    const token = await AsyncStorage.getItem('userToken');
-    const avatarByTag = await fetchGET('tags', 'avatar_' + user.user_id, token);
-    setAvatar(avatarByTag);
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const userData = await fetchGET('users/user', '', token);
+      const avatarFile = await fetchGET('tags', 'avatar_' + userData.user_id);
+      setUser((user) => ({
+        userInfo: userData,
+        avatar: avatarFile[0].filename,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -27,6 +36,10 @@ const Profile = (props) => {
     props.navigation.navigate('Auth');
   };
 
+  const showEdit = () => {
+    props.navigation.navigate('Edit');
+  };
+
   return (
     <Container>
       <Content>
@@ -35,18 +48,23 @@ const Profile = (props) => {
             <Left>
               <Icon name='person' />
               <Body>
-                <Text>Username: {user.username}</Text>
+                <Text>Username: {user.userInfo.username}</Text>
               </Body>
             </Left>
+            <Right>
+              <Button onPress={showEdit}>
+                <Text>Edit account</Text>
+              </Button>
+            </Right>
           </CardItem>
           <CardItem cardBody>
-            <AsyncImage style={{width: 350, height: 350, margin: 10}} source={{uri: mediaUrl + avatar[0].filename}} alt='No avatar found' />
+            <AsyncImage style={{width: 350, height: 350, margin: 10}} source={{uri: mediaURL + user.avatar}} alt='No avatar found' />
           </CardItem>
           <CardItem>
             <Left>
               <Body>
-                <Text>Fullname: {user.full_name}</Text>
-                <Text>Email: {user.email}</Text>
+                <Text>Fullname: {user.userInfo.full_name}</Text>
+                <Text>Email: {user.userInfo.email}</Text>
               </Body>
             </Left>
           </CardItem>

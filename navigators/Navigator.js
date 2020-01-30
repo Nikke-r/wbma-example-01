@@ -8,6 +8,7 @@ import Profile from '../views/Profile';
 import Single from '../views/Single';
 import AuthLoading from '../views/AuthLoading';
 import Login from '../views/Login';
+import EditProfile from '../views/EditProfile';
 import {Icon} from 'native-base';
 
 const TabNavigator = createBottomTabNavigator(
@@ -57,6 +58,7 @@ const Navigator = createSwitchNavigator(
       AuthLoading: AuthLoading,
       App: StackNavigator,
       Auth: Login,
+      Edit: EditProfile,
     },
     {
       initialRouteName: 'AuthLoading',
