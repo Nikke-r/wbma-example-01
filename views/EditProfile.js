@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, {useState} from 'react';
-import {Container, Header, Body, Text, Content, Form, Item, Button, Label, Icon, View, Title} from 'native-base';
+import {Container, Header, Body, Text, Content, Form, Item, Button, Icon, View, Title} from 'native-base';
 import FormTextInput from '../components/FormTextInput';
 import PropTypes from 'prop-types';
 import useSignUpForm from '../hooks/LoginHooks';

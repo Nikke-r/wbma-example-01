@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, {useState} from 'react';
 import {AsyncStorage} from 'react-native';
-import {Container, Content, Button, Text, Header, Title, Body, Root, Form, Item} from 'native-base';
+import {Container, Content, Button, Text, Header, Title, Body, Root, Form, ListItem, ListListItem, Icon} from 'native-base';
 import ShowIcon from '../components/ShowIcon';
 import FormTextInput from '../components/FormTextInput';
 import useSignUpForm from '../hooks/LoginHooks';
@@ -23,7 +23,7 @@ const Login = (props) => {
     try {
       console.log(inputs);
       const user = await fetchPOST('login', inputs);
-      await AsyncStorage.setItem('userToken', user.token);
+      await AsyncStorage.setListItem('userToken', user.token);
       props.navigation.navigate('App');
     } catch (e) {
       console.log('signInAsync error: ' + e.message);
@@ -70,12 +70,14 @@ const Login = (props) => {
             <Title>
               Login
             </Title>
-            <Item>
+            <ListItem iconLeft>
+              <Icon name='person' />
               <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} />
-            </Item>
-            <Item last>
+            </ListItem>
+            <ListItem last iconLeft>
+              <Icon name='lock' />
               <FormTextInput autoCapitalize='none' placeholder='Password' value={inputs.password} onChangeText={handlePasswordChange} secureTextEntry={true} />
-            </Item>
+            </ListItem>
             <Button full onPress={signInAsync}>
               <Text>
                 Sign in!
@@ -89,22 +91,26 @@ const Login = (props) => {
           </Form> :
             <Form>
               <Title>Register</Title>
-              <Item>
+              <ListItem iconLeft>
+                <Icon name='person' />
                 <FormTextInput autoCapitalize='none' placeholder='Username' value={inputs.username} onChangeText={handleUsernameChange} onEndEditing={checkUser} />
                 {!userExists ? <ShowIcon value={inputs.username} error={inputs.usernameError} field='username'/> : <Text note>Username already taken</Text>}
-              </Item>
-              <Item>
+              </ListItem>
+              <ListItem>
+                <Icon name='mail' />
                 <FormTextInput autoCapitalize='none' placeholder='Email' value={inputs.email} onChangeText={handleEmailChange} />
                 <ShowIcon value={inputs.email} error={inputs.emailError} field='email' />
-              </Item>
-              <Item>
+              </ListItem>
+              <ListItem>
+                <Icon name='lock' />
                 <FormTextInput autoCapitalize='none' placeholder='Password' value={inputs.password} onChangeText={handlePasswordChange} secureTextEntry={true} />
                 <ShowIcon value={inputs.password} error={inputs.passwordError} field='password' />
-              </Item>
-              <Item last>
+              </ListItem>
+              <ListItem last>
+                <Icon name='lock' />
                 <FormTextInput autoCapitalize='none' placeholder='Retype password' value={inputs.retypePassword} onChangeText={handleRetypePasswordChange} secureTextEntry={true} />
                 <ShowIcon value={inputs.retypePassword} error={inputs.retypePasswordError} field='retypePassword' />
-              </Item>
+              </ListItem>
               <Button full onPress={registerAsync}>
                 <Text>
                   Register!

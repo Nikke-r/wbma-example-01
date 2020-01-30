@@ -23,7 +23,7 @@ const constraints = {
     presence: true,
     length: {
       minimum: 3,
-      message: 'Your username must be at least three (3) characters long',
+      message: 'At least 3 characters',
     },
   },
 };
