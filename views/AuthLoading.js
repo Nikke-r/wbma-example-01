@@ -1,13 +1,16 @@
 import React, {useEffect} from 'react';
 import {ActivityIndicator, AsyncStorage, StatusBar, View} from 'react-native';
+import {fetchGET} from '../hooks/APIHooks';
 
 const bootstrapAsync = async (props) => {
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
-
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    props.navigation.navigate(userToken ? 'App' : 'Auth');
+    try {
+      const response = await fetchGET('users/user', '', userToken);
+      props.navigation.navigate(response.message ? 'Auth' : 'App');
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   useEffect(() => {
     getToken();

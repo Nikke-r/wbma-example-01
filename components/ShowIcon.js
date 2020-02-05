@@ -8,7 +8,6 @@ const ShowIcon = (props) => {
       null
     );
   } else if (props.error) {
-    console.log(props.error);
     if (props.field === 'username') {
       return (
         <ListItem iconRight>

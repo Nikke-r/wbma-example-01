@@ -9,12 +9,14 @@ import Single from '../views/Single';
 import AuthLoading from '../views/AuthLoading';
 import Login from '../views/Login';
 import EditProfile from '../views/EditProfile';
+import Upload from '../views/Upload';
 import {Icon} from 'native-base';
 
 const TabNavigator = createBottomTabNavigator(
     {
       Home,
       Profile,
+      Upload,
     },
     {
       defaultNavigationOptions: ({navigation}) => ({
@@ -25,6 +27,8 @@ const TabNavigator = createBottomTabNavigator(
             iconName = 'home';
           } else if (routeName === 'Profile') {
             iconName = 'person';
+          } else if (routeName === 'Upload') {
+            iconName = 'cloud-upload';
           }
 
           return <Icon
@@ -33,8 +37,19 @@ const TabNavigator = createBottomTabNavigator(
           />;
         },
       }),
+      tabBarOptions: {
+        activeTintColor: 'rgba(0, 0, 0, 0.5)',
+      },
     },
 );
+
+TabNavigator.navigationOptions = ({navigation}) => {
+  const {routeName} = navigation.state.routes[navigation.state.index];
+  const headerTitle = routeName;
+  return {
+    headerTitle,
+  };
+};
 
 const StackNavigator = createStackNavigator(
     {
