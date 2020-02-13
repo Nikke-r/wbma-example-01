@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 import React, {useState, useEffect} from 'react';
 import {Image} from 'react-native';
