@@ -9,9 +9,10 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import PropTypes from 'prop-types';
+import {Video} from 'expo-av';
 
 const Upload = (props) => {
-  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   const {
     handleTitleChange,
     handleDescriptionChange,
@@ -34,26 +35,27 @@ const Upload = (props) => {
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.cancelled) {
-      setImage(result);
+      setFile(result);
     }
   };
 
   const resetForm = () => {
-    setImage(null);
+    setFile(null);
     inputs.description = '';
     inputs.title = '';
   };
 
   return (
     <Content>
-      {image ? <Image source={{uri: image.uri}} style={{width: '100%', height: 350}} /> : null}
+      {file.media_type === 'image' ? <Image source={{uri: file.uri}} style={{width: '100%', height: 350}} /> : null}
+      {file.media_type === 'video' ? <Video source={{uri: file.uri}} style={{width: 350, height: 350, margin: 10}} shouldPlay /> : null}
       <Form>
         <Item>
           <FormTextInput placeholder='Title' value={inputs.title} onChangeText={handleTitleChange} />

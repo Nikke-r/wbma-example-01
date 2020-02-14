@@ -77,4 +77,23 @@ const fetchPUT = async (endpoint = '', data = {}, token = '') => {
   return json;
 };
 
-export {getAllMedia, fetchGET, fetchPOST, fetchPUT};
+const fetchDEL = async (endpoint = '', data = {}, token = '') => {
+  try {
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token,
+      },
+      body: JSON.stringify(data),
+    };
+
+    const response = await fetch(apiUrl + endpoint, fetchOptions);
+    const json = response.json();
+    return json;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export {getAllMedia, fetchGET, fetchPOST, fetchPUT, fetchDEL};

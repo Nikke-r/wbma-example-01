@@ -40,6 +40,10 @@ const Profile = (props) => {
     props.navigation.navigate('Edit');
   };
 
+  const showFiles = () => {
+    props.navigation.navigate('MyFiles');
+  };
+
   return (
     <Container>
       <Content>
@@ -70,6 +74,9 @@ const Profile = (props) => {
           </ListItem>
           <CardItem footer bordered>
             <Body>
+              <Button full onPress={showFiles}>
+                <Text>My files</Text>
+              </Button>
               <Button full danger onPress={signOutAsync}>
                 <Text>Logout</Text>
               </Button>

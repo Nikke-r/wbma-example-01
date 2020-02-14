@@ -3,7 +3,7 @@ import {useState, useContext} from 'react';
 import {AsyncStorage} from 'react-native';
 const mediaUrl = 'http://media.mw.metropolia.fi/wbma/media';
 import validate from 'validate.js';
-import {fetchGET} from '../hooks/APIHooks';
+import {fetchGET, fetchPUT} from '../hooks/APIHooks';
 import {MediaContext} from '../contexts/MediaContext';
 
 const constraints = {
@@ -79,10 +79,26 @@ const uploadHooks = (props) => {
     }
   };
 
+  const handleEdit = async (mediaID, navigation) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const data = {
+        title: inputs.title,
+        description: inputs.description,
+      };
+      const response = await fetchPUT('media/' + mediaID, data, token);
+      console.log(response);
+      navigation.pop();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return {
     handleTitleChange,
     handleDescriptionChange,
     handleUpload,
+    handleEdit,
     inputs,
   };
 };

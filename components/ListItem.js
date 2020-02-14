@@ -19,7 +19,7 @@ const ListItems = (props) => {
         <Button onPress={
           () => {
             props.navigation.push('Single', {
-              img: props.singleMedia,
+              file: props.singleMedia,
             });
           }
         }>
