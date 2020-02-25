@@ -1,7 +1,6 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 import React, {useState, useEffect} from 'react';
-import {Image} from 'react-native';
 import {Text, Form, Item, Button, Content} from 'native-base';
 import FormTextInput from '../components/FormTextInput';
 import uploadHooks from '../hooks/UploadHooks';
@@ -9,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import PropTypes from 'prop-types';
-import {Video} from 'expo-av';
+import MediaContent from '../components/MediaContent';
 
 const Upload = (props) => {
   const [file, setFile] = useState(null);
@@ -54,8 +53,7 @@ const Upload = (props) => {
 
   return (
     <Content>
-      {file.media_type === 'image' ? <Image source={{uri: file.uri}} style={{width: '100%', height: 350}} /> : null}
-      {file.media_type === 'video' ? <Video source={{uri: file.uri}} style={{width: 350, height: 350, margin: 10}} shouldPlay /> : null}
+      {file ? <MediaContent file={file} /> : null}
       <Form>
         <Item>
           <FormTextInput placeholder='Title' value={inputs.title} onChangeText={handleTitleChange} />
